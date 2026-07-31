@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>System Update</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family: 'Courier New', monospace; }
+  body {
+    background:#000;
+    color:#0f0;
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    position:relative;
+  }
+
+  /* --- Layar 1: fake scan --- */
+  #scanScreen {
+    width:100%; height:100%;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    gap:20px;
+  }
+  #scanScreen h1 {
+    color:#ff3b3b;
+    font-size:28px;
+    animation: flicker 0.3s infinite alternate;
+    text-align:center;
+  }
+  @keyframes flicker {
+    0% { opacity:1; }
+    100% { opacity:0.7; }
+  }
+  #log {
+    width:80%;
+    max-width:600px;
+    height:200px;
+    overflow:hidden;
+    font-size:13px;
+    line-height:1.6;
+    color:#0f0;
+  }
+  #progressWrap {
+    width:80%; max-width:600px;
+    height:20px;
+    border:1px solid #0f0;
+    position:relative;
+  }
+  #progressFill {
+    height:100%;
+    width:0%;
+    background:#ff3b3b;
+    transition: width 0.1s linear;
+  }
+  #percent { font-size:14px; margin-top:8px; }
+
+  /* --- Layar 2: glitch chaos --- */
+  #glitchScreen {
+    display:none;
+    width:100%; height:100%;
+    background:#ff0000;
+    color:#000;
+    align-items:center; justify-content:center;
+    flex-direction:column;
+    animation: glitchBg 0.1s infinite;
+  }
+  @keyframes glitchBg {
+    0% { background:#ff0000; }
+    25% { background:#000; }
+    50% { background:#ff0000; }
+    75% { background:#111; }
+    100% { background:#ff0000; }
+  }
+  #glitchScreen h1 {
+    font-size: clamp(30px, 8vw, 70px);
+    color:#fff;
+    text-shadow: 2px 2px 0 #000;
+    animation: shake 0.1s infinite;
+  }
+  @keyframes shake {
+    0% { transform: translate(2px, -2px); }
+    50% { transform: translate(-2px, 2px); }
+    100% { transform: translate(2px, 2px); }
+  }
+
+  /* --- Layar 3: reveal prank --- */
+  #revealScreen {
+    display:none;
+    width:100%; height:100%;
+    background:#1e1e2f;
+    color:#fff;
+    align-items:center; justify-content:center;
+    flex-direction:column;
+    text-align:center;
+    gap:16px;
+    padding:20px;
+  }
+  #revealScreen h1 { font-size: clamp(36px,8vw,64px); color:#4ecdc4; }
+  #revealScreen p { color:rgba(255,255,255,0.6); font-size:16px; max-width:500px; }
+  #revealScreen button {
+    margin-top:20px;
+    padding:14px 32px;
+    border:none;
+    border-radius:40px;
+    background:#4ecdc4;
+    color:#000;
+    font-weight:bold;
+    font-size:15px;
+    cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+  <!-- LAYAR 1: SCANNING PALSU -->
+  <div id="scanScreen">
+    <h1>⚠ SYSTEM SCAN IN PROGRESS ⚠</h1>
+    <div id="log"></div>
+    <div id="progressWrap"><div id="progressFill"></div></div>
+    <div id="percent">0%</div>
+  </div>
+
+  <!-- LAYAR 2: GLITCH CHAOS -->
+  <div id="glitchScreen">
+    <h1>SYSTEM ERROR</h1>
+  </div>
+
+  <!-- LAYAR 3: REVEAL -->
+  <div id="revealScreen">
+    <h1>TAPI BOONG!</h1>
+    <p>makanya jan download game bajakan</p>
+    <button onclick="location.reload()">↺ Ulangi</button>
+  </div>
+
+<script>
+(function(){
+  const logEl = document.getElementById('log');
+  const fill = document.getElementById('progressFill');
+  const percentEl = document.getElementById('percent');
+  const scanScreen = document.getElementById('scanScreen');
+  const glitchScreen = document.getElementById('glitchScreen');
+  const revealScreen = document.getElementById('revealScreen');
+
+  const fakeLines = [
+    "Scanning boot sector...",
+    "Checking system32...",
+    "Analyzing memory blocks...",
+    "Reading registry keys...",
+    "Detecting anomaly...",
+    "Anomaly signature found!",
+    "Isolating threat...",
+    "Threat spreading..."
+  ];
+
+  let lineIndex = 0;
+  function addLine(){
+    if(lineIndex < fakeLines.length){
+      const p = document.createElement('div');
+      p.textContent = "> " + fakeLines[lineIndex];
+      logEl.appendChild(p);
+      logEl.scrollTop = logEl.scrollHeight;
+      lineIndex++;
+      setTimeout(addLine, 450);
+    }
+  }
+  addLine();
+
+  let pct = 0;
+  const interval = setInterval(() => {
+    pct += Math.random() * 6;
+    if(pct >= 100){
+      pct = 100;
+      clearInterval(interval);
+      setTimeout(showGlitch, 400);
+    }
+    fill.style.width = pct + '%';
+    percentEl.textContent = Math.floor(pct) + '%';
+  }, 200);
+
+  function showGlitch(){
+    scanScreen.style.display = 'none';
+    glitchScreen.style.display = 'flex';
+    setTimeout(showReveal, 1800);
+  }
+
+  function showReveal(){
+    glitchScreen.style.display = 'none';
+    revealScreen.style.display = 'flex';
+  }
+})();
+</script>
+
+</body>
+</html>
